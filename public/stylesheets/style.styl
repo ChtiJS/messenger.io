@@ -1,0 +1,45 @@
+*
+    -webkit-box-sizing border-box
+    -moz-box-sizing border-box
+    box-sizing border-box
+    margin 0
+    padding 0
+
+html
+body
+.messages
+    width 100%
+    height 100%
+
+send_height = 20px
+send_btn_width = 50px
+teh_border = 1px solid black
+
+.messages
+    padding-bottom send_height
+
+.send
+    position absolute
+    bottom 0
+    left 0
+    padding-right send_btn_width
+    border teh_border
+
+    &
+    input
+        width 100%
+
+    input
+    button
+        height send_height
+        line-height send_height
+        border none
+
+    input
+        border-right teh_border
+
+    button
+        position absolute
+        top 0
+        right 0
+        width send_btn_width

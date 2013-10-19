@@ -1,0 +1,12 @@
+doctype 5
+html
+    head
+        title= title
+        link(rel='stylesheet', href='/stylesheets/style.css')
+    body
+        ul.messages
+        form.send
+            input(type='text', name='send', placeholder='Type message here')
+            button(type='submit')= 'Send'
+        script(src='/socket.io/socket.io.js')
+        script(src='/javascripts/client.js')
