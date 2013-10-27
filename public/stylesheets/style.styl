@@ -15,8 +15,34 @@ send_height = 20px
 send_btn_width = 50px
 teh_border = 1px solid black
 
+body
+    background-color black
+    font-family monospace
+
+input
+    font-family inherit
+    font-size inherit
+
 .messages
-    padding-bottom send_height
+    display block
+    line-height 1.25em
+    padding send_height
+    color white
+
+    dt
+    dd
+        float left
+
+    dt
+        color gold
+        clear left
+        padding-right 0.65em
+
+        &.system
+            color white
+            
+            & + dd
+                color red
 
 .send
     position absolute

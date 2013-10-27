@@ -11,8 +11,34 @@ body,
   width: 100%;
   height: 100%;
 }
+body {
+  background-color: #000;
+  font-family: monospace;
+}
+input {
+  font-family: inherit;
+  font-size: inherit;
+}
 .messages {
-  padding-bottom: 20px;
+  display: block;
+  line-height: 1.25em;
+  padding: 20px;
+  color: #fff;
+}
+.messages dt,
+.messages dd {
+  float: left;
+}
+.messages dt {
+  color: #ffd700;
+  clear: left;
+  padding-right: 0.65em;
+}
+.messages dt.system {
+  color: #fff;
+}
+.messages dt.system + dd {
+  color: #f00;
 }
 .send {
   position: absolute;

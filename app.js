@@ -25,7 +25,7 @@ app.configure('development', function() {
 });
 
 app.get('/', function(req, res) {
-    res.render('index', { title: 'Express' });
+    res.render('index', { title: 'Messenger.io' });
 });
 
 server.listen(app.get('port'));
@@ -42,7 +42,17 @@ io.sockets.on('connection', function(socket) {
             error = 'Name already taken !'
         } else {
             users.push(data.name);
-            socket.set('username', data.name, function() {});
+            socket.set('username', data.name, function() {
+                socket.emit('broadcast', {
+                    name: null,
+                    message: 'Welcome! Press enter to start chatting.'
+                });
+
+                io.sockets.emit('broadcast', {
+                    name: null,
+                    message: data.name + ' has joined'
+                })
+            });
         }
 
         socket.emit('loginResponse', {
@@ -68,10 +78,14 @@ io.sockets.on('connection', function(socket) {
 
     socket.on('disconnect', function() {
         socket.get('username', function(err, name) {
-            io.sockets.emit('broadcast', {
-                name: name,
-                message: 'I\'m off bitches'
-            });
+            if (name) {
+                io.sockets.emit('broadcast', {
+                    name: null,
+                    message: name + ' has disconnected'
+                });
+
+                ((nameIndex = users.indexOf(name)) > -1) && users.splice(nameIndex, 1);
+            }
         });
     });
 });

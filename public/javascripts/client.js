@@ -5,9 +5,35 @@ Element.prototype.on = Element.prototype.addEventListener;
 
 
 
-// Socket opening + DOM element caching
+// PageVisibility API universalization
+
+document.isHidden = function() {
+    if (document.hidden !== undefined) {
+        return document.hidden;
+    }
+
+    if (document.webkitHidden !== undefined) {
+        return document.webkitHidden;
+    }
+
+    if (document.mozHidden !== undefined) {
+        return document.mozHidden;
+    }
+
+    if (document.msHidden !== undefined) {
+        return document.msHidden;
+    }
+
+    return false;
+}
+
+
+
+// Misc variables
 
 var socket = io.connect('http://localhost:3000'),
+    wn = window.webkitNotifications,
+    icon_url = 'https://pbs.twimg.com/profile_images/3565788553/79ed17e02ee909628ea2ea4b393f8c1a_bigger.png',
     $messages = $('.messages'),
     $form = $('.send'),
     $input = $('.send input');
@@ -17,8 +43,24 @@ var socket = io.connect('http://localhost:3000'),
 // Message zone DOM handling
 
 $messages.add = function(data) {
-    $messages.innerHTML += '<li><span class="user">' + data.name + '</span>' + data.message + '</li>';
+    $messages.innerHTML += '<dt' + ((data.name === null) ? ' class="system">*' : '>' + data.name + ':') + '</dt><dd>' + data.message + '</dd>';
+
+    if (document.isHidden() && wn && data.name) {
+        var notif = wn.createNotification(icon_url, data.name, data.message);
+        notif.show();
+    }
 };
+
+
+
+// Focus on input when user presses Enter
+
+$('body').on('keydown', function(e) {
+    if (e.keyCode == 13) {
+        $('[name=send]').value || e.preventDefault();
+        $('[name=send]').focus();
+    }
+});
 
 
 
