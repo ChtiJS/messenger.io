@@ -44,25 +44,16 @@ input {
   position: absolute;
   bottom: 0;
   left: 0;
-  padding-right: 50px;
-  border: 1px solid #000;
+  border-top: 1px solid #ccc;
 }
 .send,
 .send input {
   width: 100%;
 }
-.send input,
-.send button {
+.send input {
   height: 20px;
   line-height: 20px;
+  background-color: #000;
   border: none;
-}
-.send input {
-  border-right: 1px solid #000;
-}
-.send button {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 50px;
+  color: #fff;
 }

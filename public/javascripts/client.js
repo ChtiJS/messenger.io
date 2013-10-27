@@ -5,6 +5,30 @@ Element.prototype.on = Element.prototype.addEventListener;
 
 
 
+// Notification permission handler
+
+window.notify = function(name, message) {
+    if (window.Notification) {
+        // If permission to display notifications is neither granted nor denied, we request it
+        if ((Notification.permission != 'granted') && (Notification.permission != 'denied')) {
+            Notification.requestPermission(function(permission) {
+                console.log(permission);
+                Notification.permission = permission;
+            });
+        }
+
+        // If permission is granted, we show our notification
+        if ((Notification.permission == 'granted') && name) {
+            var notif = new Notification(name, {
+                body: message,
+                icon: 'https://pbs.twimg.com/profile_images/3565788553/79ed17e02ee909628ea2ea4b393f8c1a_bigger.png'
+            });
+        }
+    }
+};
+
+
+
 // PageVisibility API universalization
 
 document.isHidden = function() {
@@ -25,15 +49,13 @@ document.isHidden = function() {
     }
 
     return false;
-}
+};
 
 
 
-// Misc variables
+// Socket opening && jQuery object caching
 
 var socket = io.connect('http://localhost:3000'),
-    wn = window.webkitNotifications,
-    icon_url = 'https://pbs.twimg.com/profile_images/3565788553/79ed17e02ee909628ea2ea4b393f8c1a_bigger.png',
     $messages = $('.messages'),
     $form = $('.send'),
     $input = $('.send input');
@@ -45,19 +67,23 @@ var socket = io.connect('http://localhost:3000'),
 $messages.add = function(data) {
     $messages.innerHTML += '<dt' + ((data.name === null) ? ' class="system">*' : '>' + data.name + ':') + '</dt><dd>' + data.message + '</dd>';
 
-    if (document.isHidden() && wn && data.name) {
-        var notif = wn.createNotification(icon_url, data.name, data.message);
-        notif.show();
+    if (document.isHidden() && data.name) {
+        window.notify(data.name, data.message);
     }
 };
 
 
 
 // Focus on input when user presses Enter
+// Also asks for notification permission
 
 $('body').on('keydown', function(e) {
     if (e.keyCode == 13) {
-        $('[name=send]').value || e.preventDefault();
+        if (! $('[name=send]').value) {
+            e.preventDefault();
+            window.notify();
+        }
+
         $('[name=send]').focus();
     }
 });

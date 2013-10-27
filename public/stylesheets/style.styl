@@ -11,9 +11,7 @@ body
     width 100%
     height 100%
 
-send_height = 20px
-send_btn_width = 50px
-teh_border = 1px solid black
+input_height = 20px
 
 body
     background-color black
@@ -26,7 +24,7 @@ input
 .messages
     display block
     line-height 1.25em
-    padding send_height
+    padding input_height
     color white
 
     dt
@@ -48,24 +46,15 @@ input
     position absolute
     bottom 0
     left 0
-    padding-right send_btn_width
-    border teh_border
+    border-top 1px solid #CCCCCC
 
     &
     input
         width 100%
 
     input
-    button
-        height send_height
-        line-height send_height
+        height input_height
+        line-height input_height
+        background-color black
         border none
-
-    input
-        border-right teh_border
-
-    button
-        position absolute
-        top 0
-        right 0
-        width send_btn_width
+        color white
