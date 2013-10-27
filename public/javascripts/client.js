@@ -55,7 +55,7 @@ document.isHidden = function() {
 
 // Socket opening && jQuery object caching
 
-var socket = io.connect('http://localhost:3000'),
+var socket = io.connect(window.location.href),
     $messages = $('.messages'),
     $form = $('.send'),
     $input = $('.send input');
@@ -75,17 +75,20 @@ $messages.add = function(data) {
 
 
 // Focus on input when user presses Enter
-// Also asks for notification permission
 
 $('body').on('keydown', function(e) {
     if (e.keyCode == 13) {
-        if (! $('[name=send]').value) {
-            e.preventDefault();
-            window.notify();
-        }
-
-        $('[name=send]').focus();
+        $input.value || e.preventDefault();
+        $input.focus();
     }
+});
+
+
+
+// Check (and ask, if needed, for) notification permission
+
+$input.on('focus', function() {
+    window.notify();
 });
 
 
